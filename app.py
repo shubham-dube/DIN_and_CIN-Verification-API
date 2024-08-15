@@ -2,8 +2,10 @@ from flask import Flask, jsonify, Response, make_response, request
 import requests
 from bs4 import BeautifulSoup
 import html
+from asgiref.wsgi import WsgiToAsgi
 
 app = Flask(__name__)
+asgi_app = WsgiToAsgi(app)
 
 @app.route("/api/v1/getCINdetails", methods=["POST"])
 def getCINdetails():
@@ -216,4 +218,5 @@ def getDINdetails():
     
 
 if __name__ == "__main__":
-    app.run()
+    import uvicorn
+    uvicorn.run(asgi_app, host='0.0.0.0', port=5001)
